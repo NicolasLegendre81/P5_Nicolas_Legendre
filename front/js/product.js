@@ -5,7 +5,9 @@ let productUrlId = params.get('id');
 let url=(`http://localhost:3000/api/products/${productUrlId}`);
 fetch (url)
     .then ((response) => response.json())
+
     .then (product =>{
+      //création des élément dans le DOM
         let productImg=document.createElement("img");
         productImg.src=product.imageUrl;
         productImg.alt=product.altTxt;
@@ -25,11 +27,13 @@ fetch (url)
             document.querySelector('select').appendChild(option);
         });
     })
+    //récupération de la quantité selectionnée
     function quantity() {
         let quantity =document.getElementById('quantity').value;
         return quantity;
 
     }
+    //récupération de la couleur selectionnée
     function color(){
     let color = document.getElementById('colors').value;
      
@@ -55,14 +59,16 @@ fetch (url)
         localStorage.setItem('product',JSON.stringify(productsRegistered));
         console.table(productsRegistered);
         };
-
+      
       if (productsRegistered) {
-        
-         const productAlreadyInStorage= productsRegistered.find(
+         //si un produit est dans le localstorage on  vérifie que le couleur est l'id ne soit pas les mêmes 
+          const productAlreadyInStorage= productsRegistered.find(
            (el)=>el.iD===productUrlId && el.color===color()
          );
-         console.log(productAlreadyInStorage)
+
+         
         if(productAlreadyInStorage){
+          //Si oui on itére la quantité
           let newQuantity= parseInt(selectedProduct.Quantity)+ parseInt(productAlreadyInStorage.Quantity);
           productAlreadyInStorage.Quantity = newQuantity;
           productsRegistered.push(selectedProduct.Quantity);
@@ -71,6 +77,7 @@ fetch (url)
           
 
         }
+        //si le produit est différent on l'ajoute au localstorage
         else{
           addProductToLocalStorage();
 
@@ -80,6 +87,7 @@ fetch (url)
         
           
       } 
+      //Le localstorage est vide on ajoute le nouveau produit
       else {
         productsRegistered=[];
         addProductToLocalStorage();
