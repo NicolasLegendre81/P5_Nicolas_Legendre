@@ -35,6 +35,7 @@ fetch (url)
     //récupération du bouton
     let addToCartButton = document.getElementById('addToCart');
     //déclenchement des événement au clic
+    
 
     let cart = localStorage.getItem ('product') == null ?[] : JSON.parse (localStorage.getItem('product'));
     
@@ -52,20 +53,30 @@ fetch (url)
          
           
       }
+      const confirmation =() =>{
+        if(window.confirm(`Vos produits ${selectedProduct.quantity} ${selectedProduct.name} ${selectedProduct.color} sont ajoutés
+            a votrepanier, cliquez sur OK`)){
+            window.location.href ="./cart.html";
+        }else{
+          window.location.href="#" ;
+        }
+      }
         
         
        
       if(localStorage.product!=null){
           let find=false;
           for ( let i = 0; i < cart.length; i++) {
-              if(selectedProduct.iD === cart[i].iD && selectedProduct.color === cart[i].color){
+              if(selectedProduct.iD === cart[i].iD && selectedProduct.color === cart[i].color)
+              {
                find=true;
-              let newQuantity=parseInt(cart[i].quantity)+parseInt(selectedProduct.quantity);
-              cart[i].quantity=newQuantity;
-              cart.push(selectedProduct);
-              localStorage.setItem('product',JSON.stringify(cart));
-              break;
+               let newQuantity=parseInt(cart[i].quantity)+parseInt(selectedProduct.quantity);
+               cart[i].quantity=newQuantity;
+               cart.push(selectedProduct);
+               localStorage.setItem('product',JSON.stringify(cart));
               
+              confirmation();
+                break;
               
 
             
@@ -75,13 +86,14 @@ fetch (url)
             
             
               } 
-              else if(find=false){
+              else {
               
               
               
        
               cart.push(selectedProduct);
               localStorage.setItem('product',JSON.stringify(cart));
+              confirmation();
               };
               
             }   
@@ -99,6 +111,7 @@ fetch (url)
        
         cart.push(selectedProduct);
         localStorage.setItem('product',JSON.stringify(cart));
+        confirmation();
       }
       
 
