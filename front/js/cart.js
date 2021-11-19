@@ -109,9 +109,9 @@ else{
                                     localStorage.setItem('product',JSON.stringify(cartInStorage));
                                     location.reload();
                             }
-                            
+                            //Si l'utilisateur ne confirme pas il reste sur la page
                             else{
-                              window.location.href="#" ;
+                              window.location.href="./cart.html" ;
                             }
                           }
                        

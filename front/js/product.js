@@ -27,9 +27,11 @@ fetch (url)
             document.querySelector('select').appendChild(option);
         });
     })
-    
+
+
     //récupération du bouton
     let addToCartButton = document.getElementById('addToCart');
+    
     //initialisation du local storage:si il est vide on crée une clé sinon on récupére les données
     let cart = localStorage.getItem ('product') == null ?[] : JSON.parse (localStorage.getItem('product'));
     
@@ -39,41 +41,64 @@ fetch (url)
       let selectedProduct = {
           
           iD : productUrlId,
-          quantity :Number(parseInt(document.getElementById('quantity').value)),
-          color : document.getElementById('colors').value,        
+          quantity : Number(parseInt(document.getElementById('quantity').value)),
+          color : document.getElementById('colors').value,
+
       }
- 
-       //Si le panier n'est pas vide on vérifie ce qu'il contient
-      if(cart.lenght != 0){
-          let newCart = []
-          let find = false;
-          cart.forEach(item=> {
-              //Le produit sélectionné est déja dans le panier on incrémente la quantité
-              if(selectedProduct.iD === item.iD && selectedProduct.color === item.color)
-              {
-               find = true;
-               item.quantity = parseInt(item.quantity)+parseInt(selectedProduct.quantity)
-               newCart.push(item);
-              } 
-              //sinon on le push vers notre variable
-              else {
-                newCart.push(item);
-              };
-             
-          })  
-          if(find == false){
-            newCart.push(selectedProduct);
-          }
-          //envoi des produits vers le local storage aprés vérification
-          localStorage.setItem('product',JSON.stringify(newCart));
-          cart = newCart;    
-          }
+
+      //Ajout d'un pop up de confirmation redirigeant vers la page panier si l'utilisateur confirme
+      const confirmation = () => {
+        if(window.confirm(`Vos produits  sont ajoutés
+            à votre panier, cliquez sur OK pour accéder a votre panier.`)){
+            window.location.href = "./cart.html";
+        }
+        else{
+          window.location.href = `` ;
+        }
+      }
+
+      //Si l'utilisateur n'a pas renseigné la couleur ou la quantité on lui envoie un message d'erreur
+      if (selectedProduct.quantity == "" || selectedProduct.color == "") {
+        alert('Nous vous prions de sélectionner la quantité et la couleur désirée pour ce produit.')
+        
+      } 
+      else {
+        
       
-      //Si le panier est vide on envoi notre produit vers le local storage
-      else{
-        cart.push(selectedProduct);
-        localStorage.setItem('product',JSON.stringify(cart));
-        //confirmation();
+        //Si le panier n'est pas vide on vérifie ce qu'il contient
+        if(cart.lenght != 0){
+            let newCart = []
+            let find = false;
+            cart.forEach(item=> {
+                //Le produit sélectionné est déja dans le panier on incrémente la quantité
+                if(selectedProduct.iD === item.iD && selectedProduct.color === item.color)
+                {
+                find = true;
+                item.quantity = parseInt(item.quantity)+parseInt(selectedProduct.quantity)
+                newCart.push(item);
+                } 
+                //sinon on le push vers notre variable
+                else {
+                  newCart.push(item);
+                };
+              
+            })  
+            if(find == false){
+              newCart.push(selectedProduct);
+            }
+            //envoi des produits vers le local storage aprés vérification
+            localStorage.setItem('product',JSON.stringify(newCart));
+            cart = newCart;  
+            
+            }
+        
+        //Si le panier est vide on envoi notre produit vers le local storage
+        else{
+          cart.push(selectedProduct);
+          localStorage.setItem('product',JSON.stringify(cart));
+          
+        };
+        confirmation()
       };
   });
     
