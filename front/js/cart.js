@@ -90,52 +90,57 @@ else{
                 suppr.className="deleteItem";
                 suppr.innerHTML=('Supprimer');
                 divDelete.appendChild(suppr);
+                ///
+                ///Fonction pour changer la quantité d'un produit en utilisant la valeure affichée par l'input
+                function changeQuantity(){
+                    let quantityElem = document.querySelectorAll(".itemQuantity");
+                    
+                   for(let b=0;b<quantityElem.length;b++){
+                       quantityElem[b].addEventListener('change',() => {
+                           cartInStorage[b].quantity = quantityElem[b].value;  
+                           localStorage.setItem('product',JSON.stringify(cartInStorage))
+                           location.reload;
+                       }
+                       )      
+                 }};
 
-                function supprItem(){
+                //Fonction de supression d'un produit//
+                function supprProduct(){
                     //récupération du bouton supprimer
                     let supprButton = document.querySelectorAll('.deleteItem');
+
                     //Création d'une boucle pour parcourir le panier et cibler l'élément à supprimer
                     for(let a=0;a<supprButton.length;a++){
                     supprButton[a].addEventListener('click',()=>{
+
                         //Ciblage de l'élément
                         let productToSuppr=cartInStorage.indexOf(cartInStorage[a]);
-                        //Demande de confirmation de l'utilisateur pour prévenir les suppression accidentelles
-                        const confirmation =() =>{
+
+                        //Demande de confirmation de l'utilisateur pour prévenir les suppressions accidentelles
+                        const confirmation =() => {
+
                             //Si il y a confirmation suppression du produit du panier
                             //Renvoi du nouveau panier dans le localstorage
                             //Raffraichissement de la page pour que le produit ne soit plus affiché
-                            if(window.confirm(`Vos produits ${cartInStorage[a].quantity} ${productName} ${cartInStorage[a].color} vont êtres supprimés de votre panier, cliquez sur OK pour confirmer`)){
+                            if(window.confirm(`Vos produits ${cartInStorage[a].quantity} ${productName} ${productColor} vont êtres supprimés de votre panier, cliquez sur OK pour confirmer`)){
                                     cartInStorage.splice(productToSuppr,1);
                                     localStorage.setItem('product',JSON.stringify(cartInStorage));
                                     location.reload();
                             }
+
                             //Si l'utilisateur ne confirme pas il reste sur la page
                             else{
                               window.location.href="./cart.html" ;
                             }
                           }
-                       
                        confirmation()
-                
-                        
                     }
-                    )};
-                    
+                    )};     
                 }
-                supprItem()
-
-
-
-
-               
-                
+                 //////
+                changeQuantity()
+                supprProduct()    
             }
-                )
-                
-
-        
-    });
-    
-   
-    
+                )        
+    });   
 };
