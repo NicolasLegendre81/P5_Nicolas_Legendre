@@ -91,18 +91,20 @@ else{
                 suppr.innerHTML=('Supprimer');
                 divDelete.appendChild(suppr);
                 ///
+               
                 ///Fonction pour changer la quantité d'un produit en utilisant la valeure affichée par l'input
                 function changeQuantity(){
                     let quantityElem = document.querySelectorAll(".itemQuantity");
                     
                    for(let b=0;b<quantityElem.length;b++){
                        quantityElem[b].addEventListener('change',() => {
-                           cartInStorage[b].quantity = quantityElem[b].value;  
+                           cartInStorage[b].quantity = Number (quantityElem[b].value);  
                            localStorage.setItem('product',JSON.stringify(cartInStorage))
+                           calculTotal();
                            location.reload;
-                       }
-                       )      
-                 }};
+                       });      
+                 }
+                }
 
                 //Fonction de supression d'un produit//
                 function supprProduct(){
@@ -125,6 +127,7 @@ else{
                             if(window.confirm(`Vos produits ${cartInStorage[a].quantity} ${productName} ${productColor} vont êtres supprimés de votre panier, cliquez sur OK pour confirmer`)){
                                     cartInStorage.splice(productToSuppr,1);
                                     localStorage.setItem('product',JSON.stringify(cartInStorage));
+                                    calculTotal();
                                     location.reload();
                             }
 
@@ -133,14 +136,33 @@ else{
                               window.location.href="./cart.html" ;
                             }
                           }
-                       confirmation()
+                       confirmation();
                     }
-                    )};     
+                    )};         
+                }
+                //Fonction de calcul de la quantité totale et du prix total
+                function calculTotal(){
+                    ///récupération du panier depuis le localstorage
+                    let panier= JSON.parse(localStorage.getItem('product'));
+                    let Total=0;
+                    let quantity=0;
+                    panier.forEach(product => {
+                        fetch("http://localhost:3000/api/products/" + product.iD)
+                        .then((res) => res.json())
+                        .then (item =>{
+                            //Calcul du prix total du panier
+                            Total+=product.quantity*item.price;
+                            document.querySelector('#totalPrice').textContent=Total;
+                            ///récupération du nombre d'articles
+                            quantity+=product.quantity;
+                            document.querySelector('#totalQuantity').textContent=quantity;
+                        })                       
+                    });
                 }
                  //////
-                changeQuantity()
-                supprProduct()    
-            }
-                )        
+                calculTotal();
+                changeQuantity();
+                supprProduct();    
+            });        
     });   
-};
+}

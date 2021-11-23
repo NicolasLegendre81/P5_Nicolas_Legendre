@@ -48,8 +48,8 @@ fetch (url)
 
       //Ajout d'un pop up de confirmation redirigeant vers la page panier si l'utilisateur confirme
       const confirmation = () => {
-        if(window.confirm(`Vos produits  sont ajoutés
-            à votre panier, cliquez sur OK pour accéder a votre panier.`)){
+        if(window.confirm(`Vos produits  vont être ajoutés
+            à votre panier, cliquez sur OK pour accéder à votre panier.`)){
             window.location.href = "./cart.html";
         }
         else{
