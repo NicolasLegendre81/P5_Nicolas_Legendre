@@ -164,5 +164,120 @@ else{
                 changeQuantity();
                 supprProduct();    
             });        
-    });   
-}
+    });
+    
+};
+///fonction vérification du formulaire
+function formvalidation(){
+let form=document.querySelector('.cart__order__form');
+let NameRegExp= new RegExp ("^[a-zA-ZÀ-ÿ]+(\\s?\\.?,?'?-?[a-zA-ZÀ-ÿ])+$");
+    function firstNameOK(){
+        form.firstName.addEventListener('change',function(){
+            firstNameValidation(this)
+        });
+        const firstNameValidation = function(controlFirstname){
+            let firstNameErrorMsg=document.querySelector('#firstNameErrorMsg');
+            
+            if (NameRegExp.test(controlFirstname.value)) {
+                firstNameErrorMsg.innerHTML=''
+                return true;
+                
+            } 
+            else {
+                firstNameErrorMsg.innerHTML='Veuillez entrer votre Prénom .'
+                return false;
+                
+            }
+        }
+    }
+    function lastNameOK(){
+        form.lastName.addEventListener('change',function(){
+            lastNameValidation(this)
+        });
+        const lastNameValidation = function(controlLastName){
+            let lastNameErrorMsg=document.querySelector('#lastNameErrorMsg');
+            
+            if (NameRegExp.test(controlLastName.value)) {
+                lastNameErrorMsg.innerHTML=''
+                return true;
+                
+            } 
+            else {
+                lastNameErrorMsg.innerHTML='Veuillez entrer votre Nom de famille .'
+                return false;
+            }
+        }
+    }
+    function addressOK(){
+        form.address.addEventListener('change',function(){
+            addressValidation(this)
+        });
+        const addressValidation = function(controlAddress){
+            let addressErrorMsg=document.querySelector('#addressErrorMsg');
+            let addressRegExp= new RegExp("^[0-9a-zA-ZÀ-ÿ]+(\\s?\\.?,?'?-?°?/?[0-9a-zA-ZÀ-ÿ])+$");
+            if (addressRegExp.test(controlAddress.value)) {
+                addressErrorMsg.innerHTML=''
+                return true;
+                
+            } 
+            else {
+                addressErrorMsg.innerHTML='Veuillez entrer votre Adresse .'
+                return false;
+                
+            }
+        }
+    }
+    function cityOK(){
+        form.city.addEventListener('change',function(){
+            cityValidation(this)
+        });
+        const cityValidation = function(controlCity){
+            let cityErrorMsg=document.querySelector('#cityErrorMsg');
+            let cityRegExp= new RegExp ("^[a-zA-ZÀ-ÿ]+(\\s?\\.?,?'?-?\\/?[a-zA-ZÀ-ÿ])+$");;
+            if (cityRegExp.test(controlCity.value)) {
+                cityErrorMsg.innerHTML=''
+                return true;
+                
+            } 
+            else {
+                cityErrorMsg.innerHTML='Veuillez saisir votre ville de résidence .'
+                return false;
+            }
+        }
+    }
+
+    function mailOk(){
+    form.email.addEventListener('change',function(){
+        emailValidation(this)
+    });
+    const emailValidation = function(controlMail){
+        let mailErrorMesg=document.querySelector('#emailErrorMsg');
+        console.log(mailErrorMesg)
+        let emailRegExp= new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
+        if (controlMail.value!='' && emailRegExp.test(controlMail.value)) {
+            mailErrorMesg.innerHTML=''
+            return true;
+            
+        } else {        
+            mailErrorMesg.innerHTML='Veuillez renseigner un email valide.'
+            return false;
+        }
+    }}
+    firstNameOK()
+    lastNameOK()
+    addressOK()
+    cityOK()
+    mailOk()
+
+    if(!firstNameOK()==true&&
+    !lastNameOK()==true&&
+    !addressOK()==true&&
+    !cityOK()==true&&
+    !mailOk()==true
+    ){console.log('tout est ok')}
+    else{console.log('shit')}
+};
+formvalidation()
+// function sendForm(){
+//     let orderButtn = document.getElementById("order"),
+// }
